@@ -1,0 +1,76 @@
+set main.fastsim.package = fastjet
+set main.fastsim.jetrecomode = jets
+set main.fastsim.algorithm = antikt
+set main.fastsim.radius = 0.5
+
+# Charged Hadrons reconstruction efficiencies
+define reco_efficiency j 0.0 [pt <= 0.1]
+define reco_efficiency j 0.7 [abseta <= 1.5 and pt > 0.1 and pt<=1]
+define reco_efficiency j 0.95 [abseta <= 1.5 and pt > 0.1]
+define reco_efficiency j 0.6 [abseta > 1.5 and abseta <= 2.5 and pt > 0.1 and pt <= 1]
+define reco_efficiency j 0.85 [abseta > 1.5 and abseta <= 2.5 and pt > 1]
+define reco_efficiency j 0.0 [abseta > 2.5]
+
+# Electrons reconstruction efficiencies
+define reco_efficiency e 0.0 [pt <= 0.1]
+define reco_efficiency e 0.73 [abseta <= 1.5 and pt > 0.1 and pt <= 1.0]
+define reco_efficiency e 0.95 [abseta <= 1.5 and pt > 1 and pt <= 100]
+define reco_efficiency e 0.99 [abseta <= 1.5 and pt >100]
+define reco_efficiency e 0.50 [abseta > 1.5 and abseta <= 2.5 and pt > 0.1 and pt <= 1.0]
+define reco_efficiency e 0.83 [abseta > 1.5 and abseta <=2.5 and pt > 0.1 and pt <= 100]
+define reco_efficiency e 0.9 [abseta > 1.5 and abseta <= 2.5 and pt > 100]
+define reco_efficiency e 0.0 [abseta > 2.5]
+
+# Muon reconstruction efficiencies
+define reco_efficiency mu 0.0 [pt <= 0.1]
+define reco_efficiency mu 0.75 [abseta <= 1.5 and pt > 0.1 and pt <= 1.0]
+define reco_efficiency mu 0.99 [abseta <= 1.5 and pt > 1 and pt <= 1000]
+define reco_efficiency mu 0.99*exp(0.5 - pt*5.0e-4) [abseta <= 1.5 and pt >1000]
+define reco_efficiency mu 0.70 [abseta > 1.5 and abseta <= 2.5 and pt > 0.1 and pt <= 1.0]
+define reco_efficiency mu 0.98 [abseta > 1.5 and abseta <=2.5 and pt > 1 and pt <= 1000]
+define reco_efficiency mu 0.98*exp(0.5 - pt*5.0e-4) [abseta > 1.5 and abseta <= 2.5 and pt > 1000]
+define reco_efficiency mu 0.0 [abseta > 2.5]
+
+# Charged hadron momentum smearing based on arXiv:1405.6569
+define smearer j with PT sqrt(0.06^2 + pt^2*1.3e-3^2) [pt > 0.1 and abseta <= 0.5]
+define smearer j with PT sqrt(0.10^2 + pt^2*1.7e-3^2) [abseta > 0.5 and abseta <= 1.5 and pt > 0.1]
+define smearer j with PT sqrt(0.25^2 + pt^2*3.1e-3^2) [abseta > 1.5 and abseta <= 2.5 and pt > 0.1]
+
+# Electron momentum smearing [same arXiv]
+define smearer e with PT sqrt(0.03^2 + pt^2*1.3e-3^2) [pt > 0.1 and abseta <= 0.5]
+define smearer e with PT sqrt(0.05^2 + pt^2*1.7e-3^2) [abseta > 0.5 and abseta <= 1.5 and pt > 0.1]
+define smearer e with PT sqrt(0.15^2 + pt^2*3.1e-3^2) [abseta > 1.5 and abseta <= 2.5 and pt > 0.1]
+
+# Muon momentum smearing 
+define smearer mu with PT sqrt(0.01^2 + pt^2*1.0e-4^2) [pt > 0.1 and abseta <= 0.5]
+define smearer mu with PT sqrt(0.015^2 + pt^2*1.5e-4^2) [abseta > 0.5 and abseta <= 1.5 and pt > 0.1]
+define smearer mu with PT sqrt(0.025^2 + pt^2*3.5e-4^2) [abseta > 1.5 and abseta <= 2.5 and pt > 0.1]
+
+#HCAL resolution for all jets
+define smearer j with E sqrt(E^2*0.05^2 + E*1.50^2) [abseta <= 3]
+define smearer j with E sqrt(E^2*0.130^2 + E*2.70^2) [abseta > 3.0 and abseta <= 5.0]
+
+# ECAL resolution for electron and photon
+# Eta shape from arXiv:1306.2016, Energy shape from arXiv:1502.02701
+define smearer e with E (1+0.64*eta^2)*sqrt(E^2*0.008^2 + E*0.11^2 + 0.40^2) [abseta <= 1.5]
+define smearer a with E (1+0.64*eta^2)*sqrt(E^2*0.008^2 + E*0.11^2 + 0.40^2) [abseta <= 1.5]
+define smearer e with E (2.16 + 5.6*(ABSETA-2)^2) * sqrt(E^2*0.008^2 + E*0.11^2 + 0.40^2) [abseta > 1.5 and abseta <= 2.5]
+define smearer a with E (2.16 + 5.6*(ABSETA-2)^2) * sqrt(E^2*0.008^2 + E*0.11^2 + 0.40^2) [abseta > 1.5 and abseta <= 2.5]
+define smearer e with E sqrt(E^2*0.107^2 + E*2.08^2) [abseta > 2.5 and abseta <= 5.0]
+define smearer a with E sqrt(E^2*0.107^2 + E*2.08^2) [abseta > 2.5 and abseta <= 5.0]
+
+#define c = 4 -4
+
+define tagger b as b 0.85*tanh(0.0025*pt)*(25/(1+0.063*pt))
+define tagger c as b 0.25*tanh(0.018*pt)*(1/(1+0.0013*pt))
+define tagger j as b 0.01+3.8e-04*pt
+
+# tau tagging
+define tagger j as ta 0.01
+define tagger ta as ta 0.6
+
+import /home/giopolykra/ma5_v1.8.19/samples/25k_*.hepmc.gz
+set main.outputfile='25k_fastjet_without_plots.lhe'
+
+submit
+

@@ -1,0 +1,4 @@
+set main.fastsim.package = delphes
+import /home/giopolykra/ma5_v1.8.19/samples/100k_ttbar_*.hepmc.gz
+set main.outputfile='100k_delphes_new_without_plots.lhe'
+submit

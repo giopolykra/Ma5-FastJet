@@ -1,0 +1,31 @@
+import /home/giopolykra/ma5_v1.8.19/bin/100k_delphes_new/Output/_defaultset/lheEvents0_0/100k_delphes_new_without_plots.lhe as reco_sample_100k
+set reco_sample_100k.xsection = 74.7
+define l = l- l+
+define ta = ta- ta+
+define lep = e+ e- mu+ mu-
+select (l) -2.5 < ETA < 2.5
+select (j) -2.5 < ETA < 2.5
+#reject (l) DELTAR(j)<1
+plot MET 	20 0 600 	[logY] #1
+plot MET 	20 0 600 	[logY] #2
+plot THT 	20 100 2000 	[logY] #3
+plot THT 	20 100 1900 	[logY] #4
+plot TET 	20 100 2000 	[logY] #5
+plot TET 	20 100 1900 	[logY] #6
+plot MHT 	20 100 2000 	[logY] #7
+plot MHT 	20 100 1900 	[logY] #8 
+plot NPID 			[logY] #9
+plot NAPID 			[logY] #10
+plot N(l) 	8 0 8 		[logY] #11
+plot N(j) 	35 0 35 	[logY] #12
+plot N(b) 	10 0 10		[logY] #13
+plot N(b~) 	10 0 10		[logY] #14
+plot N(ta) 	35 0 35 	[logY] #15
+plot PT(j[1])   20 0 800 	[logY] #16
+plot PT(j[2])   20 0 800 	[logY] #17
+plot PT(l[1])   20 0 600 	[logY] #18
+plot PT(ta)     20 0 600 	[logY] #19
+plot ETA(j[1])  24 -3 3	 	[logY] #20
+plot ETA(j[2])	24 -3 3 	[logY] #21
+plot ETA(l[1])  24 -3 3 	[logY] #22
+submit
